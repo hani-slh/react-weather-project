@@ -11,7 +11,7 @@ root.render(
   <React.StrictMode>
     <div className="App">
       <div className="container">
-        <Weather />
+        <Weather defaultcity="New York" />
         <footer>
           Open-source code by {""}
           <a href="https://github.com/hani-slh/react-weather-project">

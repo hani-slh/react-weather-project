@@ -1,11 +1,41 @@
-import React from "react";
+import React, { useState } from "react";
+
 import "./Weather.css";
+import WeatherInfo from "./WeatherInfo";
 
 export default function Weather() {
-  return (
-    <div className="App">
-      <div className="weather">
-        <form>
+  const [weatherData, setWeatherDate] = useState({ ready: false });
+  const [city, setCity] = useState(props.defaultcity);
+  function handleResponse(response) {
+    console.log(response.data);
+    setWeatherDate({
+      ready: true,
+      temperature: response.data.main.temp,
+      humidity: response.data.main.humidity,
+      describtion: response.data.Weather[0].describtion,
+      wind: response.data.wind.speed,
+      city: response.data.name,
+      date: new Date(response.data.dt * 1000),
+    });
+  }
+  function search() {
+    const apiKey = "d1a86552de255334f6117b348c4519bd";
+    let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${tcity}&appid=${apiKey}`;
+    axios.get(apiUrl).then(handleResponse);
+  }
+  function handleSubmit(event) {
+    event.preventDefault();
+    search(city);
+  }
+  function habdleCityChange(event) {
+    setCity(event.target.value);
+  }
+  if (weatherData.ready) {
+    return (
+      <div className="App">
+        <div className="weather"></div>
+        <form onSubmit={handleSubmit}>
+          <WeatherInfo data={weatherData} />
           <div className="row">
             <div className="col-9">
               <input
@@ -13,6 +43,7 @@ export default function Weather() {
                 placeholder="Enter a city"
                 className="form-control"
                 autoFocus="on"
+                onChange={habdleCityChange}
               />
             </div>
             <div className="col-3">
@@ -20,30 +51,11 @@ export default function Weather() {
             </div>
           </div>
         </form>
-        <h1>New York </h1>
-        <ul>
-          <li>Thursday 07:00</li>
-          <li>Mostly cloudy</li>
-        </ul>
-        <div className="row mt-3">
-          <div className="col-6">
-            <div className="clearfix">
-              <img
-                src="https://ssl.gstatic.com/onebox/weather/64/partly_cloudy.png"
-                className="float-left"
-              />
-              <span className="temp">6</span> <span className="unit">°C</span>
-            </div>
-          </div>
-          <div className="col-6">
-            <ul>
-              <li>Precipitation: 15%</li>
-              <li>Humidity: 70%</li>
-              <li>Wind: 14 km/h</li>
-            </ul>
-          </div>
-        </div>
+        ;
       </div>
-    </div>
-  );
+    );
+  } else {
+    search();
+    return "Loading...";
+  }
 }
