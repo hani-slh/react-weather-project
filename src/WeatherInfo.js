@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import FormattedDate from "./FormattedDate";
-import axios from "axios";
 
 export default function WeatherInfo(props) {
   <div>
@@ -14,11 +13,7 @@ export default function WeatherInfo(props) {
     <div className="row mt-3">
       <div className="col-6">
         <div className="clearfix">
-          <img
-            src="https://ssl.gstatic.com/onebox/weather/64/partly_cloudy.png"
-            className="float-left"
-            alt="Weather"
-          />
+          <img src={props.data.icon} className="float-left" alt="Weather" />
           <span className="temp">{props.data.temperature}</span>{" "}
           <span className="unit">°C</span>
         </div>
